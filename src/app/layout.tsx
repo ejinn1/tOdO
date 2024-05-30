@@ -1,3 +1,4 @@
+import StyledComponentsRegistry from "@/libs/registry";
 import StyledThemeProvider from "@/provider/ThemeProvider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -18,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <StyledThemeProvider>{children}</StyledThemeProvider>
+        <StyledComponentsRegistry>
+          <StyledThemeProvider>{children}</StyledThemeProvider>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );
