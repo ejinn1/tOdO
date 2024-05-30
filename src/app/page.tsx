@@ -1,42 +1,24 @@
 "use client";
 
 import styled from "styled-components";
-import Eye from "./_components/eye";
+import Header from "./_components/Header";
+import Week from "./_components/Week";
 
 export default function Home() {
   return (
-    <Container>
-      <Title>
-        T
-        <EyeWrapper>
-          <Eye />
-        </EyeWrapper>
-        D
-        <EyeWrapper>
-          <Eye />
-        </EyeWrapper>
-      </Title>
-    </Container>
+    <MainContainer>
+      <Header />
+      <Week />
+    </MainContainer>
   );
 }
 
-const Container = styled.main`
+const MainContainer = styled.main`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 20px;
-`;
-
-const Title = styled.h1`
-  font-size: 2.5rem;
-`;
-
-const EyeWrapper = styled.span`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  margin: 0 0.2rem;
+  padding: 2rem;
+  gap: 2rem;
+  width: 100vw;
+  height: 100vh;
 `;
