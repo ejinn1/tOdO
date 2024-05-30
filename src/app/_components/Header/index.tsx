@@ -1,28 +1,27 @@
 import styled from "styled-components";
-import Container from "../Container";
 import Eye from "../Eye";
 
 export default function Header() {
   return (
     <Wrapper>
-      <Container>
-        <Title>
-          T
-          <EyeWrapper>
-            <Eye />
-          </EyeWrapper>
-          D
-          <EyeWrapper>
-            <Eye />
-          </EyeWrapper>
-        </Title>
-      </Container>
+      <Title>
+        T
+        <EyeWrapper>
+          <Eye />
+        </EyeWrapper>
+        D
+        <EyeWrapper>
+          <Eye />
+        </EyeWrapper>
+      </Title>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  width: 100%;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
 `;
 
 const Title = styled.h1`
