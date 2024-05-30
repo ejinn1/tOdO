@@ -37,12 +37,7 @@ export default function Week() {
         <StyledArrowBack size={30} onClick={handleBackWeek} />
         <WeekWrapper>
           {week.map((day, index) => (
-            <DayContainer
-              key={index}
-              onClick={() => {
-                console.log(day.getDate());
-              }}
-            >
+            <DayContainer key={index}>
               <DayOfWeekBox>
                 {day.toLocaleDateString("ko-KR", { weekday: "short" })}
               </DayOfWeekBox>
