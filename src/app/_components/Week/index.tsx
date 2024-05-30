@@ -9,7 +9,7 @@ export default function Week() {
   const getWeekDays = (date: Date) => {
     const startOfWeek = new Date(date);
     startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
-    const weekDays = Array.from({ length: 7 }).map((_, i) => {
+    const weekDays = Array.from({ length: 30 }).map((_, i) => {
       const day = new Date(startOfWeek);
       day.setDate(startOfWeek.getDate() + i);
       return day;
@@ -31,6 +31,7 @@ export default function Week() {
               <DayOfWeekBox>
                 {day.toLocaleDateString("ko-KR", { weekday: "short" })}
               </DayOfWeekBox>
+              <TodoBox />
               <DateBox>{day.getDate()}</DateBox>
             </DayContainer>
           ))}
@@ -48,6 +49,8 @@ const Wrapper = styled.div`
 const WeekWrapper = styled.div`
   width: 100%;
   padding: 0 2rem;
+
+  overflow-x: scroll;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -59,15 +62,28 @@ const DayContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 2rem;
+  min-width: 6rem;
+  padding: 1rem;
+  gap: 1rem;
   text-align: center;
-  border-radius: 4px;
+  border-radius: 0.4px;
+  overflow-x: scroll;
 `;
 
 const DayOfWeekBox = styled.div`
-  font-size: 1.2rem;
+  font-size: ${({ theme }) => theme.fontSizes.body};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+`;
+
+// todo 색으로 교체
+const TodoBox = styled.div`
+  width: 2rem;
+  height: 2rem;
+  background-color: ${({ theme }) => theme.colors.lightGray};
+  border-radius: 0.2rem;
 `;
 
 const DateBox = styled.div`
-  font-size: 2rem;
+  font-size: ${({ theme }) => theme.fontSizes.body};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
 `;

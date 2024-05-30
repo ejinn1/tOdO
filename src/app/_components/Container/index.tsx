@@ -14,7 +14,9 @@ const StyledContainer = styled.div`
   align-items: center;
   width: inherit;
   height: inherit;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(3rem);
+  -webkit-backdrop-filter: blur(3rem);
   border: 1px solid darkgray;
   border-radius: 1rem;
 `;
