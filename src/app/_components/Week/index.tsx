@@ -10,7 +10,21 @@ import Container from "../Container";
 export default function Week() {
   const { week, setWeek } = useWeekStore();
 
-  const handleNextWeek = () => {};
+  const handleBackWeek = () => {
+    const firstDayOfCurrentWeek = new Date(week[0]);
+    const previousWeekStart = new Date(firstDayOfCurrentWeek);
+    previousWeekStart.setDate(previousWeekStart.getDate() - 14);
+    const previousWeekDays = getWeekDays(previousWeekStart);
+    setWeek(previousWeekDays);
+  };
+
+  const handleNextWeek = () => {
+    const lastDayOfCurrentWeek = new Date(week[week.length - 1]);
+    const nextWeekStart = new Date(lastDayOfCurrentWeek);
+    nextWeekStart.setDate(nextWeekStart.getDate() + 1);
+    const nextWeekDays = getWeekDays(nextWeekStart);
+    setWeek(nextWeekDays);
+  };
 
   useEffect(() => {
     const weekDays = getWeekDays(new Date());
@@ -20,10 +34,15 @@ export default function Week() {
   return (
     <Wrapper>
       <Container>
-        <StyledArrowBack size={30} />
+        <StyledArrowBack size={30} onClick={handleBackWeek} />
         <WeekWrapper>
           {week.map((day, index) => (
-            <DayContainer key={index}>
+            <DayContainer
+              key={index}
+              onClick={() => {
+                console.log(day.getDate());
+              }}
+            >
               <DayOfWeekBox>
                 {day.toLocaleDateString("ko-KR", { weekday: "short" })}
               </DayOfWeekBox>
@@ -32,7 +51,7 @@ export default function Week() {
             </DayContainer>
           ))}
         </WeekWrapper>
-        <StyledArrowForWrad size={30} />
+        <StyledArrowForWrad size={30} onClick={handleNextWeek} />
       </Container>
     </Wrapper>
   );
@@ -44,11 +63,8 @@ const StyledArrowBack = styled(IoIosArrowBack)`
   left: -2.5rem;
   color: ${({ theme }) => theme.colors.mediumGray};
   cursor: pointer;
-  visibility: hidden;
-  opacity: 0;
-  transition:
-    opacity 0.3s,
-    visibility 0.3s;
+  opacity: 0.3;
+  transition: opacity 0.3s;
 `;
 
 const StyledArrowForWrad = styled(IoIosArrowForward)`
@@ -57,11 +73,8 @@ const StyledArrowForWrad = styled(IoIosArrowForward)`
   right: -2.5rem;
   color: ${({ theme }) => theme.colors.mediumGray};
   cursor: pointer;
-  visibility: hidden;
-  opacity: 0;
-  transition:
-    opacity 0.3s,
-    visibility 0.3s;
+  opacity: 0.3;
+  transition: opacity 0.3s;
 `;
 
 const Wrapper = styled.div`
@@ -69,11 +82,9 @@ const Wrapper = styled.div`
   max-width: 100rem;
 
   &:hover ${StyledArrowBack} {
-    visibility: visible;
     opacity: 1;
   }
   &:hover ${StyledArrowForWrad} {
-    visibility: visible;
     opacity: 1;
   }
 `;
@@ -89,7 +100,6 @@ const WeekWrapper = styled.div`
 const DayOfWeekBox = styled.div`
   font-size: ${({ theme }) => theme.fontSizes.body};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
-  /* background-color: white; */
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
