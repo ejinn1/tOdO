@@ -18,6 +18,6 @@ const StyledContainer = styled.div`
   background-color: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(3rem);
   -webkit-backdrop-filter: blur(3rem);
-  border: 1px solid darkgray;
+  box-shadow: 0.2rem 0.2rem 0.5rem ${({ theme }) => theme.colors.lightGray};
   border-radius: 1rem;
 `;

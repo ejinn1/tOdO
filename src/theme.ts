@@ -18,6 +18,7 @@ export const theme = {
     lightGray: "#BDBEC2",
     paleGray: "#C7C7CC",
     beige: "#D6CEC3",
+    lightBeige: "#EBE2D6",
     lightestGray: "#F7F7F7",
   },
   fontSizes: {
