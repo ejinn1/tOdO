@@ -14,7 +14,7 @@ const StyledContainer = styled.div`
   align-items: center;
   width: inherit;
   height: inherit;
-  background-color: ivory;
-  border: 1px solid black;
+  background-color: ${({ theme }) => theme.colors.background};
+  border: 1px solid darkgray;
   border-radius: 1rem;
 `;
