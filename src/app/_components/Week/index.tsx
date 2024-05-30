@@ -1,5 +1,6 @@
 import { getWeekDays } from "@/utils/date";
 import { useEffect } from "react";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import styled from "styled-components";
 import { useWeekStore } from "../../../store/useWeekStore";
 import Container from "../Container";
@@ -15,6 +16,7 @@ export default function Week() {
   return (
     <Wrapper>
       <Container>
+        <StyledArrowBack size={30} />
         <WeekWrapper>
           {week.map((day, index) => (
             <DayContainer key={index}>
@@ -26,20 +28,54 @@ export default function Week() {
             </DayContainer>
           ))}
         </WeekWrapper>
+        <StyledArrowForWrad size={30} />
       </Container>
     </Wrapper>
   );
 }
 
+const StyledArrowBack = styled(IoIosArrowBack)`
+  position: absolute;
+  top: 1/2;
+  left: -2.5rem;
+  color: ${({ theme }) => theme.colors.mediumGray};
+  cursor: pointer;
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity 0.3s,
+    visibility 0.3s;
+`;
+
+const StyledArrowForWrad = styled(IoIosArrowForward)`
+  position: absolute;
+  top: 1/2;
+  right: -2.5rem;
+  color: ${({ theme }) => theme.colors.mediumGray};
+  cursor: pointer;
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity 0.3s,
+    visibility 0.3s;
+`;
+
 const Wrapper = styled.div`
   width: 100%;
   max-width: 100rem;
+
+  &:hover ${StyledArrowBack} {
+    visibility: visible;
+    opacity: 1;
+  }
+  &:hover ${StyledArrowForWrad} {
+    visibility: visible;
+    opacity: 1;
+  }
 `;
 
 const WeekWrapper = styled.div`
   width: 100%;
-  padding: 0 2rem;
-
   overflow-x: scroll;
   display: flex;
   justify-content: space-between;
@@ -56,8 +92,7 @@ const DayContainer = styled.div`
   padding: 1rem;
   gap: 1rem;
   text-align: center;
-  border-radius: 0.4px;
-  overflow-x: scroll;
+  border-radius: 0.4rem;
 `;
 
 const DayOfWeekBox = styled.div`

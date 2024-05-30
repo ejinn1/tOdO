@@ -12,6 +12,7 @@ const StyledContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
   width: inherit;
   height: inherit;
   background-color: rgba(255, 255, 255, 0.6);
