@@ -1,7 +1,7 @@
 "use client";
 
 import { getWeekDays } from "@/utils/date";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import styled from "styled-components";
 import { useWeekStore } from "../../../store/useWeekStore";
@@ -9,6 +9,8 @@ import Container from "../Container";
 
 export default function Week() {
   const { week, setWeek } = useWeekStore();
+  const now = new Date();
+  const [clickedDate, setCLickedDate] = useState(now);
 
   const handleBackWeek = () => {
     const firstDayOfCurrentWeek = new Date(week[0]);
@@ -36,15 +38,25 @@ export default function Week() {
       <Container>
         <StyledArrowBack size={30} onClick={handleBackWeek} />
         <WeekWrapper>
-          {week.map((day, index) => (
-            <DayContainer key={index}>
-              <DayOfWeekBox>
-                {day.toLocaleDateString("ko-KR", { weekday: "short" })}
-              </DayOfWeekBox>
-              <TodoBox />
-              <DateBox>{day.getDate()}</DateBox>
-            </DayContainer>
-          ))}
+          {week.map((day, index) => {
+            const isToday =
+              day.getDate() === now.getDate() &&
+              day.getMonth() === now.getMonth() &&
+              day.getFullYear() === now.getFullYear();
+            const isClicked =
+              day.getDate() === clickedDate.getDate() &&
+              day.getMonth() === clickedDate.getMonth() &&
+              day.getFullYear() === clickedDate.getFullYear();
+            return (
+              <DayContainer key={index} onClick={() => setCLickedDate(day)}>
+                <DayOfWeekBox $isclicked={isClicked}>
+                  {day.toLocaleDateString("ko-KR", { weekday: "short" })}
+                </DayOfWeekBox>
+                <TodoBox />
+                <DateBox $istoday={isToday}>{day.getDate()}</DateBox>
+              </DayContainer>
+            );
+          })}
         </WeekWrapper>
         <StyledArrowForWrad size={30} onClick={handleNextWeek} />
       </Container>
@@ -92,13 +104,15 @@ const WeekWrapper = styled.div`
   align-items: center;
 `;
 
-const DayOfWeekBox = styled.div`
+const DayOfWeekBox = styled.div<{ $isclicked: boolean }>`
   font-size: ${({ theme }) => theme.fontSizes.body};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
   transition: background-color 0.3s;
+  background-color: ${({ $isclicked, theme }) =>
+    $isclicked && theme.colors.beige};
 `;
 
 const DayContainer = styled.div`
@@ -130,7 +144,13 @@ const TodoBox = styled.div`
   border-radius: 0.2rem;
 `;
 
-const DateBox = styled.div`
+const DateBox = styled.div<{ $istoday: boolean }>`
   font-size: ${({ theme }) => theme.fontSizes.body};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+  background-color: ${({ $istoday, theme }) =>
+    $istoday && theme.colors.lightBlue};
 `;
