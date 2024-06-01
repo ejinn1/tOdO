@@ -1,7 +1,8 @@
 "use client";
 
+import { useClickedDate } from "@/store/useClickedDate";
 import { getWeekDays } from "@/utils/date";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import styled from "styled-components";
 import { useWeekStore } from "../../../store/useWeekStore";
@@ -9,8 +10,9 @@ import Container from "../Container";
 
 export default function Week() {
   const { week, setWeek } = useWeekStore();
+  const { clickedDate, setClickedDate } = useClickedDate();
   const now = new Date();
-  const [clickedDate, setCLickedDate] = useState(now);
+  // const [clickedDate, setCLickedDate] = useState(now);
 
   const handleBackWeek = () => {
     const firstDayOfCurrentWeek = new Date(week[0]);
@@ -48,7 +50,7 @@ export default function Week() {
               day.getMonth() === clickedDate.getMonth() &&
               day.getFullYear() === clickedDate.getFullYear();
             return (
-              <DayContainer key={index} onClick={() => setCLickedDate(day)}>
+              <DayContainer key={index} onClick={() => setClickedDate(day)}>
                 <DayOfWeekBox $isclicked={isClicked}>
                   {day.toLocaleDateString("ko-KR", { weekday: "short" })}
                 </DayOfWeekBox>
