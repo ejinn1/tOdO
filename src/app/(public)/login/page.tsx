@@ -65,7 +65,7 @@ export default function LoginPage() {
       <Form onSubmit={handleLogin}>
         <InputContainer>
           <Input
-            type="email"
+            type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder=" "
@@ -93,7 +93,9 @@ export default function LoginPage() {
           />
           <InputLabel>{passwordLabel}</InputLabel>
         </InputContainer>
-        <Button type="submit">로그인</Button>
+        <Button type="submit" $isEmpty={email === "" || password === ""}>
+          로그인
+        </Button>
       </Form>
       <Link href={"/signup"}>
         <SignupWrapper>
@@ -197,17 +199,27 @@ const InputLabel = styled.label`
   transition: 0.2s ease all;
 `;
 
-const Button = styled.button`
+const Button = styled.button<{ $isEmpty: boolean }>`
   width: 100%;
   padding: 1rem;
-  background-color: ${({ theme }) => theme.colors.lightBlue};
+  background-color: ${({ $isEmpty, theme }) =>
+    $isEmpty ? theme.colors.lightGray : theme.colors.lightBlue};
   color: white;
   border: none;
   border-radius: 0.4rem;
-  font-size: 1rem;
-  font-weight: bold;
+  font-size: ${({ theme }) => theme.fontSizes.caption};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: filter 0.3s ease-in-out;
+
+  ${({ $isEmpty }) =>
+    !$isEmpty &&
+    `
+      &:hover {
+    filter: brightness(1.2);
+  }
+  `}
 `;
 
 const SignupWrapper = styled.div`
