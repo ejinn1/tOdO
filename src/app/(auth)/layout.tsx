@@ -1,5 +1,3 @@
-import StyledComponentsRegistry from "@/libs/registry";
-import StyledThemeProvider from "@/provider/ThemeProvider";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -15,9 +13,5 @@ export default async function Layout({ children }: Props) {
     redirect("/login");
   }
 
-  return (
-    <StyledComponentsRegistry>
-      <StyledThemeProvider>{children}</StyledThemeProvider>
-    </StyledComponentsRegistry>
-  );
+  return { children };
 }
