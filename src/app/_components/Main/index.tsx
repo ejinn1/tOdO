@@ -1,72 +1,97 @@
 import { useClickedDate } from "@/store/useClickedDate";
 import styled from "styled-components";
-import Todo, { TodoSpace } from "../Todo";
+import TodoContainer from "../TodoContainer";
 
-const DUMMY_TODOS: TodoSpace[] = [
-  {
-    id: 1,
-    title: "투두 타이틀 1",
+interface SubTask {
+  id: number;
+  content: string;
+  complete: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Todo {
+  id: number;
+  content: string;
+  complete: boolean;
+  subTasks?: SubTask[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface TodoCategory {
+  todos: Todo[];
+}
+
+interface TodoList {
+  id: number;
+  date: Date;
+  important: TodoCategory;
+  normal: TodoCategory;
+}
+
+const todoList: TodoList = {
+  id: 1,
+  date: new Date(),
+  important: {
     todos: [
       {
-        id: 1,
+        id: 11,
         content: "내용 1",
-        complete: false,
-        priority: "높음",
+        complete: true,
         subTasks: [
-          { content: "서브 태스크 1", complete: false },
-          { content: "서브 태스크 2", complete: true },
+          {
+            id: 111,
+            content: "서브 태스크 3",
+            complete: false,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
         ],
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        id: 2,
+        id: 12,
         content: "내용 2",
         complete: true,
-        priority: "중간",
-        subTasks: [{ content: "서브 태스크 3", complete: false }],
+        subTasks: [],
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-    ],
-  },
-  {
-    id: 2,
-    title: "투두 타이틀 2",
-    todos: [
       {
-        id: 3,
+        id: 13,
         content: "내용 3",
         complete: false,
-        priority: "낮음",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: 4,
-        content: "내용 4",
-        complete: true,
-        priority: "높음",
+        subTasks: [],
         createdAt: new Date(),
         updatedAt: new Date(),
       },
     ],
   },
-  {
-    id: 3,
-    title: "투두 타이틀 3",
+  normal: {
     todos: [
       {
-        id: 5,
-        content: "내용 5",
+        id: 14,
+        content: "일반 내용 1",
         complete: false,
-        priority: "중간",
+
+        subTasks: [],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: 15,
+        content: "일반 내용 2",
+        complete: false,
+
+        subTasks: [],
         createdAt: new Date(),
         updatedAt: new Date(),
       },
     ],
   },
-];
+};
 
 export default function Main() {
   const { clickedDate } = useClickedDate();
@@ -78,9 +103,10 @@ export default function Main() {
         </div>
         <div>설명</div>
       </Description>
-      {DUMMY_TODOS.map((todoSpace) => (
-        <Todo key={todoSpace.id} todoSpace={todoSpace} />
-      ))}
+      <TodoContainerWrapper>
+        <TodoContainer category={todoList.important} title="Important" />
+        <TodoContainer category={todoList.normal} title="Normal" />
+      </TodoContainerWrapper>
     </Wrapper>
   );
 }
@@ -102,4 +128,16 @@ const Wrapper = styled.article`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+`;
+
+const TodoContainerWrapper = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%;
+  max-width: 100rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
