@@ -1,9 +1,9 @@
 "use client";
 
 import styled from "styled-components";
-import Header from "./_components/Header";
-import Main from "./_components/Main";
-import Week from "./_components/Week";
+import Header from "../_components/Header";
+import Main from "../_components/Main";
+import Week from "../_components/Week";
 
 export default function Home() {
   return (
