@@ -13,5 +13,5 @@ export default async function Layout({ children }: Props) {
     redirect("/login");
   }
 
-  return { children };
+  return <>{children}</>;
 }

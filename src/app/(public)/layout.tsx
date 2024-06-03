@@ -16,6 +16,6 @@ const Wrapper = styled.main`
   align-items: center;
   width: 100vw;
   height: 100vh;
-  padding: 1rem;
+  padding: 4rem 1rem;
   background-color: ${({ theme }) => theme.colors.lightBeige};
 `;
