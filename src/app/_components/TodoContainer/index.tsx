@@ -48,11 +48,14 @@ export default function TodoContainer({ category }: Props) {
   };
 
   useEffect(() => {
+    const date = `${clickedDate.getFullYear()}-${(clickedDate.getMonth() + 1).toString().padStart(2, "0")}-${clickedDate.getDate().toString().padStart(2, "0")}`;
+
     const getTodos = async () => {
       const { data, error } = await supabase
         .from("todos")
         .select("*")
-        .eq("category_id", category.id);
+        .eq("category_id", category.id)
+        .eq("date", date);
       if (data) {
         setTodos(data);
         console.log(data);
@@ -61,7 +64,7 @@ export default function TodoContainer({ category }: Props) {
     };
 
     getTodos();
-  }, []);
+  }, [clickedDate]);
 
   return (
     <Container>
@@ -70,7 +73,7 @@ export default function TodoContainer({ category }: Props) {
         <AddWrapper onClick={() => setClickAddButton(true)}>
           <IoAdd size={24} color="gray" />
         </AddWrapper>
-        <EmptyText>할 일이 없어요</EmptyText>
+        {todos?.length === 0 && <EmptyText>할 일이 없어요</EmptyText>}
         <TodoWrapper>
           {todos && todos.map((todo) => <TodoItem key={todo.id} todo={todo} />)}
           {clickAddButton && (
@@ -81,6 +84,10 @@ export default function TodoContainer({ category }: Props) {
                 onChange={(e) => setContent(e.target.value)}
               />
               <AddTodoButton size={20} onClick={onClickAddTodo} />
+              <CancelTodoButton
+                size={20}
+                onClick={() => setClickAddButton(false)}
+              />
             </AddContainer>
           )}
         </TodoWrapper>
@@ -132,7 +139,7 @@ const AddContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 1rem;
-  gap: 2rem;
+  gap: 1rem;
 `;
 
 const AddInput = styled.input`
@@ -150,4 +157,12 @@ const AddInput = styled.input`
 const AddTodoButton = styled(IoAdd)`
   size: 20;
   cursor: pointer;
+  color: ${({ theme }) => theme.colors.lightBlue};
+`;
+
+const CancelTodoButton = styled(IoAdd)`
+  size: 20;
+  rotate: calc(45deg);
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.lightRed};
 `;
