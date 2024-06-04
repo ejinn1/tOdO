@@ -1,100 +1,51 @@
+"use client";
+
+import { supabase } from "@/libs/supabaseClient";
 import { useClickedDate } from "@/store/useClickedDate";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import TodoContainer from "../TodoContainer";
 
-interface SubTask {
-  id: number;
-  content: string;
-  complete: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
 export interface Todo {
   id: number;
+  todolist_id: string;
+  user_id: string;
+  category_id: string;
   content: string;
   complete: boolean;
-  subTasks?: SubTask[];
   createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface TodoCategory {
-  todos: Todo[];
+  id: string;
+  name: "important" | "normal";
 }
 
 interface TodoList {
   id: number;
   date: Date;
-  important: TodoCategory;
-  normal: TodoCategory;
+  user_id: string;
+  create_at: string;
 }
-
-const todoList: TodoList = {
-  id: 1,
-  date: new Date(),
-  important: {
-    todos: [
-      {
-        id: 11,
-        content: "내용 1",
-        complete: true,
-        subTasks: [
-          {
-            id: 111,
-            content: "서브 태스크 3",
-            complete: false,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          },
-        ],
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: 12,
-        content: "내용 2",
-        complete: true,
-        subTasks: [],
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: 13,
-        content: "내용 3",
-        complete: false,
-        subTasks: [],
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ],
-  },
-  normal: {
-    todos: [
-      {
-        id: 14,
-        content: "일반 내용 1",
-        complete: false,
-
-        subTasks: [],
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: 15,
-        content: "일반 내용 2",
-        complete: false,
-
-        subTasks: [],
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ],
-  },
-};
 
 export default function Main() {
   const { clickedDate } = useClickedDate();
+  const [isEmpty, setIsEmpty] = useState(true);
+  const [todos, setTodos] = useState<any>(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      const { data, error } = await supabase.from("todo_lists").select("*");
+      console.log(data);
+      if (data && data.length !== 0) {
+        setIsEmpty(false);
+        setTodos(data);
+      }
+    };
+
+    getData();
+  }, []);
+
   return (
     <Wrapper>
       <Description>
@@ -104,8 +55,8 @@ export default function Main() {
         <div>설명</div>
       </Description>
       <TodoContainerWrapper>
-        <TodoContainer category={todoList.important} title="Important" />
-        <TodoContainer category={todoList.normal} title="Normal" />
+        <TodoContainer todos={todos} title="Important" />
+        <TodoContainer todos={todos} title="Normal" />
       </TodoContainerWrapper>
     </Wrapper>
   );

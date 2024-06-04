@@ -1,23 +1,31 @@
 import styled from "styled-components";
 import Container from "../Container";
-import { TodoCategory } from "../Main";
+
+import { Todo } from "../Main";
 import TodoItem from "../TodoItem";
 
 interface Props {
   title: string;
-  category: TodoCategory;
+  todos: Todo[];
 }
 
-export default function TodoContainer({ title, category }: Props) {
+export default function TodoContainer({ title, todos }: Props) {
   return (
     <Container>
       <Wrapper>
         <H3>{title}</H3>
-        <TodoWrapper>
-          {category.todos.map((todo) => (
-            <TodoItem key={todo.id} todo={todo} />
-          ))}
-        </TodoWrapper>
+        <span>
+          <button>추가버튼</button>
+        </span>
+        {todos ? (
+          <TodoWrapper>
+            {todos.map((todo) => (
+              <TodoItem key={todo.id} todo={todo} />
+            ))}
+          </TodoWrapper>
+        ) : (
+          <EmptyText>할 일이 없어요</EmptyText>
+        )}
       </Wrapper>
     </Container>
   );
@@ -29,6 +37,7 @@ const Wrapper = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: inherit;
+  position: relative;
 `;
 
 const H3 = styled.h3`
@@ -44,4 +53,10 @@ const TodoWrapper = styled.ul`
   width: inherit;
   padding: 1rem;
   list-style-type: none;
+`;
+
+const EmptyText = styled.p`
+  font-size: ${({ theme }) => theme.fontSizes.body};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  color: ${({ theme }) => theme.colors.lightGray};
 `;
