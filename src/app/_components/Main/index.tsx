@@ -1,7 +1,7 @@
 "use client";
 
-import { supabase } from "@/libs/supabaseClient";
 import { useClickedDate } from "@/store/useClickedDate";
+import { supabase } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import TodoContainer from "../TodoContainer";
@@ -30,16 +30,14 @@ interface TodoList {
 
 export default function Main() {
   const { clickedDate } = useClickedDate();
-  const [isEmpty, setIsEmpty] = useState(true);
-  const [todos, setTodos] = useState<any>(null);
+  const [categorys, setCategorys] = useState<TodoCategory[]>();
 
   useEffect(() => {
     const getData = async () => {
-      const { data, error } = await supabase.from("todo_lists").select("*");
+      const { data, error } = await supabase.from("category").select("*");
       console.log(data);
       if (data && data.length !== 0) {
-        setIsEmpty(false);
-        setTodos(data);
+        setCategorys(data);
       }
     };
 
@@ -55,8 +53,10 @@ export default function Main() {
         <div>설명</div>
       </Description>
       <TodoContainerWrapper>
-        <TodoContainer todos={todos} title="Important" />
-        <TodoContainer todos={todos} title="Normal" />
+        {categorys &&
+          categorys.map((category) => (
+            <TodoContainer key={category.id} category={category} />
+          ))}
       </TodoContainerWrapper>
     </Wrapper>
   );
