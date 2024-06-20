@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Header from "../_components/Header";
 import Main from "../_components/Main";
 import Week from "../_components/Week";
+import ModalManager from "../_modals/modalManager";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
       <Header />
       <Week />
       <Main />
+      <ModalManager />
     </MainContainer>
   );
 }

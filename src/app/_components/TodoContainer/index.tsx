@@ -1,6 +1,7 @@
 "use client";
 
 import { useClickedDate } from "@/store/useClickedDate";
+import { useModalStore } from "@/store/useModalStore";
 import { createClient } from "@/utils/supabase/client";
 import { FormEvent, useEffect, useState } from "react";
 import { IoAdd } from "react-icons/io5";
@@ -17,11 +18,10 @@ export default function TodoContainer({ category }: Props) {
   const supabase = createClient();
 
   const { clickedDate } = useClickedDate();
-
+  const { openModal } = useModalStore();
   const [clickAddButton, setClickAddButton] = useState(false);
   const [content, setContent] = useState("");
   const [todos, setTodos] = useState<Todo[]>();
-  const [isHovered, setIsHovered] = useState(false);
 
   const onClickAddTodo = async (e: FormEvent) => {
     e.preventDefault();
@@ -52,7 +52,7 @@ export default function TodoContainer({ category }: Props) {
     const date = `${clickedDate.getFullYear()}-${(clickedDate.getMonth() + 1).toString().padStart(2, "0")}-${clickedDate.getDate().toString().padStart(2, "0")}`;
 
     const getTodos = async () => {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from("todos")
         .select("*")
         .eq("category_id", category.id)
@@ -61,7 +61,6 @@ export default function TodoContainer({ category }: Props) {
         setTodos(data);
         console.log(data);
       }
-      // console.log(error);
     };
 
     getTodos();
@@ -70,7 +69,7 @@ export default function TodoContainer({ category }: Props) {
   return (
     <Container>
       <Wrapper>
-        <H3>{category.name}</H3>
+        <H3 onClick={() => openModal("addTodo")}>{category.name}</H3>
         <TodoWrapper>
           {todos && todos.map((todo) => <TodoItem key={todo.id} todo={todo} />)}
           {clickAddButton && (
@@ -107,10 +106,6 @@ const H3 = styled.h3`
   font-size: ${({ theme }) => theme.fontSizes.subtitle};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   transition: text-shadow 0.3s ease-in-out;
-
-  &:hover {
-    text-shadow: 0.2rem 0.2rem 0.5rem ${({ theme }) => theme.colors.lightGray};
-  }
 `;
 
 const TodoWrapper = styled.ul`
