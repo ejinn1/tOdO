@@ -21,6 +21,7 @@ export default function TodoContainer({ category }: Props) {
   const [clickAddButton, setClickAddButton] = useState(false);
   const [content, setContent] = useState("");
   const [todos, setTodos] = useState<Todo[]>();
+  const [isHovered, setIsHovered] = useState(false);
 
   const onClickAddTodo = async (e: FormEvent) => {
     e.preventDefault();
@@ -60,7 +61,7 @@ export default function TodoContainer({ category }: Props) {
         setTodos(data);
         console.log(data);
       }
-      console.log(error);
+      // console.log(error);
     };
 
     getTodos();
@@ -70,10 +71,6 @@ export default function TodoContainer({ category }: Props) {
     <Container>
       <Wrapper>
         <H3>{category.name}</H3>
-        <AddWrapper onClick={() => setClickAddButton(true)}>
-          <IoAdd size={24} color="gray" />
-        </AddWrapper>
-        {todos?.length === 0 && <EmptyText>할 일이 없어요</EmptyText>}
         <TodoWrapper>
           {todos && todos.map((todo) => <TodoItem key={todo.id} todo={todo} />)}
           {clickAddButton && (
@@ -106,8 +103,14 @@ const Wrapper = styled.div`
 `;
 
 const H3 = styled.h3`
+  cursor: pointer;
   font-size: ${({ theme }) => theme.fontSizes.subtitle};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  transition: text-shadow 0.3s ease-in-out;
+
+  &:hover {
+    text-shadow: 0.2rem 0.2rem 0.5rem ${({ theme }) => theme.colors.lightGray};
+  }
 `;
 
 const TodoWrapper = styled.ul`
@@ -118,19 +121,6 @@ const TodoWrapper = styled.ul`
   width: inherit;
   padding: 1rem;
   list-style-type: none;
-`;
-
-const AddWrapper = styled.span`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  cursor: pointer;
-`;
-
-const EmptyText = styled.p`
-  font-size: ${({ theme }) => theme.fontSizes.body};
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-  color: ${({ theme }) => theme.colors.lightGray};
 `;
 
 const AddContainer = styled.div`

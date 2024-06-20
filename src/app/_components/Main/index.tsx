@@ -18,14 +18,7 @@ export interface Todo {
 
 export interface TodoCategory {
   id: string;
-  name: "important" | "normal";
-}
-
-interface TodoList {
-  id: number;
-  date: Date;
-  user_id: string;
-  create_at: string;
+  name: "todos" | "complete";
 }
 
 export default function Main() {
@@ -34,8 +27,8 @@ export default function Main() {
 
   useEffect(() => {
     const getData = async () => {
-      const { data, error } = await supabase.from("category").select("*");
-      console.log(data);
+      const { data } = await supabase.from("category").select("*");
+
       if (data && data.length !== 0) {
         setCategorys(data);
       }
@@ -54,7 +47,7 @@ export default function Main() {
       </Description>
       <TodoContainerWrapper>
         {categorys &&
-          categorys.map((category) => (
+          categorys?.map((category) => (
             <TodoContainer key={category.id} category={category} />
           ))}
       </TodoContainerWrapper>
